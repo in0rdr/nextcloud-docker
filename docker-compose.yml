@@ -1,0 +1,88 @@
+version: '3.7'
+
+networks:
+  testnet:
+
+volumes:
+  ncdata:
+  oolog:
+  oodata:
+  oooffice:
+  oopsql:
+  openldapdata:
+
+services:
+  openldap:
+    container_name: openldap
+    hostname: openldap
+    image: osixia/openldap
+    volumes:
+      - openldapdata:/var/lib/ldap
+    ports:
+      - 389:389
+      - 636:636
+    networks:
+      - testnet
+
+  phpldapadmin-service:
+    container_name: phpldapadmin
+    hostname: phpldapadmin
+    image: osixia/phpldapadmin
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=ldap-host
+    links:
+      - openldap:ldap-host
+    volumes:
+      - openldapdata:/var/lib/ldap
+    ports:
+      - 7780:443
+    networks:
+      - testnet
+
+  lool:
+    container_name: lool
+    image: collabora/code:latest
+    environment:
+       - extra_params="--o:ssl.enable=false"
+    ports:
+      - 9980:9980
+    networks:
+      - testnet
+
+  onlyoffice:
+    container_name: onlyoffice
+    image: onlyoffice/documentserver:latest
+    volumes:
+      - oolog:/var/log/onlyoffice
+      - oodata:/var/www/onlyoffice/Data  \
+      - oooffice:/var/lib/onlyoffice \
+      - oopsql:/var/lib/postgresql
+    ports:
+      - 8880:80
+    networks:
+      - testnet
+
+  nextcloud_base:
+    container_name: nextcloud_base
+    image: nextcloud:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ncdata:/var/www/html
+    networks:
+      - testnet
+    # depends_on:
+    #   - lool
+    #   - onlyoffice
+
+  nextcloud_config:
+    container_name: nextcloud_config
+    image: nextcloud:latest
+    volumes:
+      - ncdata:/var/www/html
+      - ./configure.sh:/configure.sh
+    command: ["/configure.sh"]
+    networks:
+      - testnet
+    depends_on:
+      - nextcloud_base
