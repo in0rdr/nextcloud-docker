@@ -6,7 +6,7 @@ set -o xtrace
 
 # change this to match a local or external ip
 # on the docker host
-EXT_IP="192.168.99.140"
+EXT_IP="192.168.1.2"
 
 WEB_ROOT=/var/www/html
 APP_DIRNAME=custom_apps # or apps
@@ -50,8 +50,9 @@ sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:test-config s01
 
 # install twofactor plugins
 # use a loop, download fails sometimes
-while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install twofactor_u2f` ]; do sleep 1; done;
-while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install twofactor_totp` ]; do sleep 1; done;
+#while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install twofactor_u2f` ]; do sleep 1; done;
+#while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install twofactor_totp` ]; do sleep 1; done;
+
 # install richdocuments
 while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install richdocuments` ]; do sleep 1; done;
 # install onlyoffice

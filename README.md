@@ -30,7 +30,7 @@ Nextcloud login credentials:
 ```
 The ldap user needs to be created manually, see [#Init LDAP Test Data](#Init-LDAP-Test-Data)
 
-Install a recent version of Docker.
+[Install](#how-do-i-install-docker-again) a recent version of Docker.
 
 Install docker-compose with `pip install --user docker-compose` (or similar command).
 
@@ -47,9 +47,9 @@ Start the containers:
 docker-compose up
 ```
 
-* Access Collabora on the Docker host: http://$EXT_IP:9980/hosting/discovery
-* Access Nextcloud on the Docker host: http://$EXT_IP:8080
-* Access phpLDAPAdmin on the Docker host: https://$EXT_IP:7780 (login credentials see [section #OpenLDAP](#OpenLDAP))
+* Access Collabora on the Docker host: `http://$EXT_IP:9980/hosting/discovery`
+* Access Nextcloud on the Docker host: `http://$EXT_IP:8080`
+* Access phpLDAPAdmin on the Docker host: `https://$EXT_IP:7780` (login credentials see [section #OpenLDAP](#OpenLDAP))
 
 ### How Do I install Docker again?
 
@@ -162,5 +162,3 @@ docker exec -it openldap bash
 * https://hub.docker.com/_/nextcloud
 * https://hub.docker.com/r/collabora/code
 * https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/user_auth_ldap.html
-* https://docs.nextcloud.com/server/latest/admin_manual/configuration_user/two_factor-auth.html
-* https://docs.nextcloud.com/server/latest/user_manual/user_2fa.html
