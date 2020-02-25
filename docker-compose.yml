@@ -12,6 +12,27 @@ volumes:
   openldapdata:
 
 services:
+  elasticsearch:
+    container_name: elasticsearch
+    hostname: elasticsearch
+    # image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+    build:
+      context: ./elastic
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+    # volumes:
+    #   - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - testnet
+
   openldap:
     container_name: openldap
     hostname: openldap
@@ -42,6 +63,8 @@ services:
   lool:
     container_name: lool
     image: collabora/code:latest
+    # volumes:
+    #    - ./loolwsd.xml:/etc/loolwsd/loolwsd.xml
     environment:
        - extra_params="--o:ssl.enable=false"
     ports:

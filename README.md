@@ -42,6 +42,12 @@ Change the external IP in the file `configure.sh`:
 EXT_IP=192.168.1.2
 ```
 
+Prepare [Elasticsearch image](https://www.docker.elastic.co/) for [full-text search](https://github.com/nextcloud/fulltextsearch/wiki/Basic-Installation):
+```
+docker image pull docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+docker image tag docker.elastic.co/elasticsearch/elasticsearch:7.6.0 elasticsearch:latest
+```
+
 Start the containers:
 ```
 docker-compose up

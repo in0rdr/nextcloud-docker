@@ -67,6 +67,21 @@ sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" config:app:set richdocuments di
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" config:system:set onlyoffice "verify_peer_off" --value=true --type=boolean
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" config:app:set onlyoffice "DocumentServerUrl" --value="http://$EXT_IP:8880/"
 
+# install full-text search plugins (core, provider and platform plugin)
+# - https://decatec.de/home-server/volltextsuche-in-nextcloud-mit-ocr/
+# - https://github.com/nextcloud/fulltextsearch/wiki/Basic-Installation
+while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install fulltextsearch` ]; do sleep 1; done;
+while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install files_fulltextsearch` ]; do sleep 1; done;
+while [ `sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" app:install fulltextsearch_elasticsearch` ]; do sleep 1; done;
+
+# configure full-text search
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" config:app:set fulltextsearch search_platform --value="OCA\FullTextSearch_ElasticSearch\Platform\ElasticSearchPlatform"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" config:app:set fulltextsearch_elasticsearch elastic_host --value="http://$EXT_IP:9200"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" config:app:set fulltextsearch_elasticsearch elastic_index --value="nextcloud"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" config:app:set fulltextsearch_elasticsearch analyzer_tokenizer --value="standard"
+
+# create the full-text index
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" fulltextsearch:index
 
 # create test user
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" OC_PASS="$DEFAULT_PASS" "$OCC" user:add frank --password-from-env
