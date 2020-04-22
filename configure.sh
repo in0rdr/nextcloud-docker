@@ -45,6 +45,9 @@ sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapUserFil
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapUserFilterObjectclass "inetOrgPerson"
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapLoginFilter "(&(objectclass=inetOrgPerson)(uid=%uid))"
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapLoginFilterAttributes "uid"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUUIDGroupAttr "cn"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUUIDUserAttr "uid" #for windows ad, choose samaccountname
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUsernameAttr "uid" #for windows ad, choose samaccountname
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapConfigurationActive 1
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:test-config s01
 
