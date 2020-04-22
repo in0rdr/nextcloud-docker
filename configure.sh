@@ -35,19 +35,20 @@ sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapBaseUse
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapAgentName "cn=admin,dc=example,dc=org"
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapAgentPassword "admin"
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapGroupFilter "(|(cn=nextcloud))"
-sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapGroupFilterGroups "nextcloud"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapGroupFilterGroups "nextcloud" # leave empty to select all groups in ldapGroupFilter
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapAttributesForGroupSearch "cn"
-sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapAttributesForUserSearch "displayName;mail;uid"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapAttributesForUserSearch "displayName;mail;uid" # add `samaccountname` for windows ad
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapGroupDisplayName "cn"
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapUserDisplayName "cn"
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapGidNumber "gidNumber"
-sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapUserFilter "(|(objectclass=inetOrgPerson))"
-sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapUserFilterObjectclass "inetOrgPerson"
-sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapLoginFilter "(&(objectclass=inetOrgPerson)(uid=%uid))"
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapUserFilter "(|(objectclass=inetOrgPerson))" # `person` for windows ad
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapUserFilterObjectclass "inetOrgPerson" # `person` for windows ad
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapLoginFilter "(&(objectclass=inetOrgPerson)(uid=%uid))" # `(&(objectclass=person)(samaccountname=%uid))` for windows ad
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapLoginFilterAttributes "uid"
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUUIDGroupAttr "cn"
-sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUUIDUserAttr "uid" #for windows ad, choose samaccountname
-sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUsernameAttr "uid" #for windows ad, choose samaccountname
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUUIDUserAttr "uid" # `samaccountname` for windows
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapExpertUsernameAttr "uid" # `samaccountname` for windows ad
+sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 turnOnPasswordChange "1" # allow users to change ldap passwords
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:set-config s01 ldapConfigurationActive 1
 sudo -u "$APACHE_USER" -g "$APACHE_GROUP" "$OCC" ldap:test-config s01
 
