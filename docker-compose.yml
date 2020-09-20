@@ -66,7 +66,7 @@ services:
     # volumes:
     #    - ./loolwsd.xml:/etc/loolwsd/loolwsd.xml
     environment:
-       - extra_params="--o:ssl.enable=false"
+       - extra_params=--o:ssl.enable=false
     ports:
       - 9980:9980
     networks:
